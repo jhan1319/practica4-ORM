@@ -431,7 +431,9 @@ public class main {
         /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-        app.get("/carrito", ctx -> {
+        app.get("/carrito/compra", ctx -> {
+
+            System.out.println("ENTRANDO AL CARRITO DE COMPRAAAAAAAAAAAAAAAAAA");
 
             if(ctx.sessionAttribute("carritoCreado") == null){
                 CarroCompra carroUser = new CarroCompra();
@@ -444,7 +446,7 @@ public class main {
                 HashMap<String, Object> mapaCarrito = new HashMap<>();
                 mapaCarrito.put("miCarrito", miCarrito.getListaProductos());
                 mapaCarrito.put("cantidad", ctx.sessionAttribute("CANTI"));
-                ctx.render("Templates/Carrito_Compra.html", mapaCarrito);
+                ctx.render("/Templates/Carrito_Compra.html", mapaCarrito);
             }
 
 
@@ -512,18 +514,13 @@ public class main {
 
         });
 
-        app.get("/LimpiarCarro", ctx -> {
-
-            CarroCompra carroUser = new CarroCompra();
-            carroUser = ctx.sessionAttribute("carritoCreado");
-            carroUser.limpiarCarrito();
-
-            System.out.println("CARRITO VACIADO CON EXITO MIOP JEJE ADIOS COMPRA");
-
-            ctx.render("/Templates/Carrito_Compra.html");
-
-
-
+        app.get("/Limpiar/Carro", ctx -> {
+            /*
+            CarroCompra carritoUser = ctx.sessionAttribute("carritoCreado");
+            carritoUser = ctx.sessionAttribute("carritoCreado");
+            carritoUser.limpiarCarrito();*/
+            ctx.sessionAttribute("carritoCreado", null);
+            ctx.redirect("/");
         });
 
 

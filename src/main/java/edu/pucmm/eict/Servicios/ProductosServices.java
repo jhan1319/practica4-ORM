@@ -30,6 +30,7 @@ public class ProductosServices extends GestionDB<Producto> {
         Query query = em.createQuery("select e from Producto e");
 
         List<Producto> lista = query.getResultList();
+
         return lista;
     }
 
@@ -37,22 +38,32 @@ public class ProductosServices extends GestionDB<Producto> {
 
         EntityManager em = getEntityManager();
 
-        Query pag = em.createQuery("SELECT COUNT (p.id) FROM Producto p");
+        try {
+            Query pag = em.createQuery("SELECT COUNT (p.id) FROM Producto p");
 
-        long contador = (Long) pag.getSingleResult();
-        int lastPageNumber = (int) (Math.ceil(contador / 10));
 
-        Query query = em.createQuery("select e from Producto e");
+            long contador = (Long) pag.getSingleResult();
+            if(contador >= 11){
+                int lastPageNumber = (int) (Math.ceil(contador / 10));
+                Query query = em.createQuery("select e from Producto e");
 
-        query.setFirstResult((numPag -1)*10);
-        query.setMaxResults(10);
+                query.setFirstResult((numPag -1)*10);
+                query.setMaxResults(10);
+                List<Producto> lista = query.getResultList();
 
-        if(contador >= 11){
-            List<Producto> lista = query.getResultList();
-            return lista;
-        } else {
-           return findAllProducts();
+                return lista;
+
+            } else {
+                return findAll();
+
+            }
+        }finally {
+            em.close();
         }
+
+
+
+
 
 
 

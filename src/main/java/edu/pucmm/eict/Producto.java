@@ -2,6 +2,8 @@ package edu.pucmm.eict;
 
 import edu.pucmm.eict.entidades.Comentarios;
 import edu.pucmm.eict.entidades.FotosEntidad;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -23,10 +25,11 @@ public class Producto implements Serializable {
     @ManyToMany(mappedBy = "productoSet")
     private List<VentasProductos> venta;
 
+    @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany (mappedBy = "productox")
     private List<FotosEntidad> fotos;
 
-    @OneToMany(mappedBy = "producto", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "producto")
     private List<Comentarios> productoComment;
 
     public List<Comentarios> getProductoComment() {
